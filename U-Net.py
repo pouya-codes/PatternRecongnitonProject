@@ -1,3 +1,5 @@
+from cProfile import label
+
 from PIL import Image
 import cv2
 import numpy as np
@@ -6,6 +8,10 @@ import matplotlib.pyplot as plt
 
 import tensorflow as tf
 from tensorflow import keras
+
+# TODO Add comments, test the model with different layers and filters
+
+
 
 # load train Data
 Train_X = np.zeros((30,512,512),dtype=np.int16)
@@ -67,11 +73,31 @@ def UNet():
     model = keras.models.Model(inputs, outputs)
     return model
 
+def plot_history(histories) :
+    plt.figure(figsize=(16,10))
+
+    for name, history in histories :
+
+        val = plt.plot(history.epoch,history.history['val_loss'],
+                       '--',label=name.title()+' Val')
+        plt.plot(history.epoch,history.history['loss'],
+                 color=val[0].get_color(),label=name.title()+' Train')
+
+
+    plt.xlabel('Epochs')
+    plt.ylabel('Binary Crossentropy')
+    plt.legend()
+    plt.xlim([0,max(history.epoch)])
+    plt.show()
+
+
 
 model = UNet()
 model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["acc"])
 model.summary()
-model.fit(Train_X,Train_Y,validation_split=0.2,epochs=50,batch_size=1)
+history = model.fit(Train_X,Train_Y,validation_split=0.2,epochs=50,batch_size=1)
+print(history.history.keys())
+plot_history([('modified U-Net',history)])
 
 
 model.save_weights("UNetWeights.h5")
