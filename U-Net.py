@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 import tensorflow as tf
 from tensorflow import keras
-
+tf.keras.optimizers.SGD
 # TODO Add comments, test the model with different layers and filters
 
 
@@ -54,6 +54,7 @@ def bottleneck(x, filters, kernel_size=(3, 3), padding="same", strides=1):
 
 def UNet():
     filters = [16, 32, 64, 128, 256]
+    # filters = [64, 128, 256, 512, 1024]
     inputs = keras.layers.Input((512, 512, 1))
 
     p0 = inputs
