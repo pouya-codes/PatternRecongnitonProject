@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5e673540-28ea-4576-95dd-96e69bac2940" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/SegCaps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UNet.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAugmentation.py" beforeDir="false" afterPath="$PROJECT_DIR$/DataAugmentation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/U-Net.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UNetWeights.h5" beforeDir="false" afterPath="$PROJECT_DIR$/UNetWeights.h5" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/result.npy" beforeDir="false" afterPath="$PROJECT_DIR$/result.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -182,6 +177,7 @@
       <workItem from="1573267269004" duration="1029000" />
       <workItem from="1573409217835" duration="39000" />
       <workItem from="1573409268527" duration="3435000" />
+      <workItem from="1573535781388" duration="1182000" />
     </task>
     <servers />
   </component>
@@ -216,6 +212,6 @@
     <SUITE FILE_PATH="coverage/PatternRecognition$DataAugmentation.coverage" NAME="DataAugmentation Coverage Results" MODIFIED="1573147902721" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PatternRecognition$U_Net.coverage" NAME="U-Net Coverage Results" MODIFIED="1573161601632" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PatternRecognition$Stack_wrapper.coverage" NAME="Stack_wrapper Coverage Results" MODIFIED="1572189691580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PatternRecognition$Main.coverage" NAME="Main Coverage Results" MODIFIED="1573411431600" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PatternRecognition$Main.coverage" NAME="Main Coverage Results" MODIFIED="1573537026024" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

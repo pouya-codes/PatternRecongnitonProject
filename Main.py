@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import UNet
 import tensorflow as tf
 from tensorflow import keras
+import DataAugmentation
 tf.keras.optimizers.SGD
 # TODO Add comments, test the model with different layers and filters
 
@@ -43,12 +44,21 @@ def plot_history(histories) :
     plt.show()
 
 
+data_gen_args = dict(rotation_range=0.2,
+                    width_shift_range=0.05,
+                    height_shift_range=0.05,
+                    shear_range=0.05,
+                    zoom_range=0.05,
+                    horizontal_flip=True,
+                    fill_mode='nearest')
+myGene = DataAugmentation.trainGenerator(2,'Data','image','label',data_gen_args,save_to_dir = None)
 
-# model = UNet.UNet()
+model = UNet.UNet()
+history = model.fit_generator(myGene,epochs=50,steps_per_epoch=300)
 # history = model.fit(Train_X,Train_Y,validation_split=0.2,epochs=50,batch_size=1)
-# plot_history([('modified U-Net',history)])
-# model.save("UNetWeights.h5")
-#
+plot_history([('modified U-Net',history)])
+model.save("UNetWeights.h5")
+
 model = tf.keras.models.load_model("UNetWeights.h5")
 
 
