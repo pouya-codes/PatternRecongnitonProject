@@ -22,8 +22,11 @@ for i in range(30) :
 
 # normalizing data
 Train_X = Train_X/255.0
+Train_X = Train_X[:-3]
 Train_X = np.expand_dims(Train_X,axis=-1)
+
 Train_Y = Train_Y/255.0
+Train_Y = Train_Y[:-3]
 Train_Y = np.expand_dims(Train_Y,axis=-1)
 
 def plot_history(histories) :
@@ -53,45 +56,65 @@ data_gen_args = dict(rotation_range=0.2,
                     fill_mode='nearest')
 myGene = DataAugmentation.trainGenerator(2,'Data','image','label',data_gen_args,save_to_dir = None)
 
-model = UNet.UNet()
-history = model.fit_generator(myGene,epochs=50,steps_per_epoch=300)
-# history = model.fit(Train_X,Train_Y,validation_split=0.2,epochs=50,batch_size=1)
-plot_history([('modified U-Net',history)])
-model.save("UNetWeights.h5")
 
-model = tf.keras.models.load_model("UNetWeights.h5")
+filters = [[8, 16, 32, 64, 128],
+            [16, 32, 64, 128, 256],
+           [32, 64, 128, 256, 512]]
+
+Test_X = Train_X[-3:]
+for filter in filters:
+    print(filter)
+
+    model = UNet.UNet(filters = filter)
+    for use_aug in [True,False]:
+        file_name = str(filter)[1:-1].replace(', ', '-')
+        if use_aug:
+            history = model.fit_generator(myGene,epochs=2,steps_per_epoch=300)
+            file_name = file_name + '_Aug'
+        else :
+            history = model.fit(Train_X,Train_Y,validation_split=0.2,epochs=50,batch_size=1)
+
+
+
+
+
+        result = model.predict(Test_X)
+        np.save(file_name+'.npy' ,result)
+# save results as jpg files
+        result = result > 0.5
+        for i in range(len(Test_X)) :
+            cv2.imwrite("results/UNet/"+file_name+"_{}.jpg".format(i),
+                        cv2.hconcat(((Test_X[i][:,:,0]*255).astype(np.int),
+                                     (result[i][:,:,0]*255).astype(np.int))))
+
+# plot_history([('modified U-Net',history)])
+# model.save("UNetWeights_Aug.h5")
+
+# model = tf.keras.models.load_model("UNetWeights.h5")
+
 
 
 # load test Data
-Test_X = np.zeros((30,512,512),dtype=np.int16)
-sw_data  = stack_wrapper.Stack_wrapper('Data/test-volume.tif')
-for i in range(30) :
-    Test_X[i] = sw_data.next()
+# Test_X = np.zeros((30,512,512),dtype=np.int16)
+# sw_data  = stack_wrapper.Stack_wrapper('Data/test-volume.tif')
+# for i in range(30) :
+#     Test_X[i] = sw_data.next()
+#
+# Test_X = Test_X/255.0
+# Test_X = np.expand_dims(Test_X,axis=-1)
 
-Test_X = Test_X/255.0
-Test_X = np.expand_dims(Test_X,axis=-1)
-
-result = model.predict(Test_X)
-
-# save results as jpg files
-for i in range(30) :
-    cv2.imwrite("results/UNet/{}.jpg".format(100+i),
-                cv2.hconcat(((Test_X[i][:,:,0]*255).astype(np.int),
-                             (result[i][:,:,0]*255).astype(np.int))))
-
-
-result = result > 0.5
-
-np.save('result.npy',result)
-
-fig = plt.figure()
-fig.subplots_adjust(hspace=0.4, wspace=0.4)
-
-ax = fig.add_subplot(1, 2, 1)
-ax.imshow(np.reshape(Test_X[0]*255, (512, 512)), cmap="gray")
-
-ax = fig.add_subplot(1, 2, 2)
-ax.imshow(np.reshape(result[0]*255, (512, 512)), cmap="gray")
-
-plt.show()
-
+#         result = result > 0.5
+#
+#
+#
+# fig = plt.figure()
+# fig.subplots_adjust(hspace=0.4, wspace=0.4)
+#
+# ax = fig.add_subplot(1, 2, 1)
+# ax.imshow(np.reshape(Test_X[0]*255, (512, 512)), cmap="gray")
+#
+# ax = fig.add_subplot(1, 2, 2)
+# ax.imshow(np.reshape(result[0]*255, (512, 512)), cmap="gray")
+#
+# plt.show()
+#

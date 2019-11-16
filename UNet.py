@@ -22,23 +22,23 @@ def bottleneck(x, filters, kernel_size=(3, 3), padding="same", strides=1):
     return c
 
 
-def UNet():
-    filters = [16, 32, 64, 128, 256]
+def UNet(filters):
+
     # filters = [64, 128, 256, 512, 1024]
     inputs = keras.layers.Input((512, 512, 1))
 
     p0 = inputs
-    c1, p1 = down_block(p0, filters[0])  # 128 -> 64
-    c2, p2 = down_block(p1, filters[1])  # 64 -> 32
-    c3, p3 = down_block(p2, filters[2])  # 32 -> 16
-    c4, p4 = down_block(p3, filters[3])  # 16->8
+    c1, p1 = down_block(p0, filters[0])
+    c2, p2 = down_block(p1, filters[1])
+    c3, p3 = down_block(p2, filters[2])
+    c4, p4 = down_block(p3, filters[3])
 
     bn = bottleneck(p4, filters[4])
 
-    u1 = up_block(bn, c4, filters[3])  # 8 -> 16
-    u2 = up_block(u1, c3, filters[2])  # 16 -> 32
-    u3 = up_block(u2, c2, filters[1])  # 32 -> 64
-    u4 = up_block(u3, c1, filters[0])  # 64 -> 128
+    u1 = up_block(bn, c4, filters[3])
+    u2 = up_block(u1, c3, filters[2])
+    u3 = up_block(u2, c2, filters[1])
+    u4 = up_block(u3, c1, filters[0])
 
     outputs = keras.layers.Conv2D(1, (1, 1), padding="same", activation="sigmoid")(u4)
     model = keras.models.Model(inputs, outputs)
