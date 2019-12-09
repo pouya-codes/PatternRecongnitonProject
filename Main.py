@@ -1,93 +1,130 @@
 from PIL import Image
+import glob
 import cv2
 import numpy as np
 import stack_wrapper
 import matplotlib.pyplot as plt
 import UNet
 import tensorflow as tf
+import sklearn
+from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger
 from tensorflow import keras
 import DataAugmentation
 tf.keras.optimizers.SGD
+from sklearn import model_selection
+
+
+
+np.random.seed(0)
+
+all_files = np.array(glob.glob("AugmentedData/image*"),dtype=np.str)
+
+X = []
+y = []
+for f in all_files:
+    label = str(f).split('image_')[-1]
+    X.append(cv2.imread("AugmentedData/image_"+label,cv2.IMREAD_GRAYSCALE))
+    th, threshed = cv2.threshold(cv2.imread("AugmentedData/mask_" + label, cv2.IMREAD_UNCHANGED)
+                                 , 128, 255, cv2.THRESH_BINARY)
+    y.append(threshed)
+
+X = np.expand_dims(np.array(X) / 255.0 ,axis=-1)
+y = np.expand_dims(np.array(y) / 255.0 ,axis=-1)
+
+
+indexs = np.arange(len(all_files))
+np.random.shuffle(indexs)
+train_idx = indexs[:270]
+test_idx = indexs[270:300]
+
+X_train = X[train_idx]
+y_train = y[train_idx]
+
+X_test = X[test_idx]
+y_test = y[test_idx]
+
+np.save("test_label.npy",y_test)
+
+
 # TODO Add comments, test the model with different layers and filters
-
-# load train Data
-Train_X = np.zeros((30,512,512),dtype=np.int16)
-Train_Y = np.zeros((30,512,512),dtype=np.int16)
-sw_data  = stack_wrapper.Stack_wrapper('Data/train-volume.tif')
-sw_lable = stack_wrapper.Stack_wrapper('Data/train-labels.tif')
-
-for i in range(30) :
-    Train_X[i] = sw_data.next()
-    Train_Y[i] = sw_lable.next()
-
-# normalizing data
-Train_X = Train_X/255.0
-Train_X = Train_X[:-3]
-Train_X = np.expand_dims(Train_X,axis=-1)
-
-Train_Y = Train_Y/255.0
-Train_Y = Train_Y[:-3]
-Train_Y = np.expand_dims(Train_Y,axis=-1)
-
 def plot_history(histories) :
     plt.figure(figsize=(16,10))
+    print (len(histories))
+    for name, history_lr in histories :
+        val_accuracy = [hist.history['val_acc'] for hist in history_lr]
+        train_accuracy = [hist.history['acc'] for hist in history_lr]
 
-    for name, history in histories :
+        maxs = np.max(val_accuracy,axis=0)
+        mins = np.min(val_accuracy, axis=0)
+        avg = np.average(val_accuracy, axis=0)
 
-        val = plt.plot(history.epoch,history.history['val_loss'],
-                       '--',label=name.title()+' Val')
-        plt.plot(history.epoch,history.history['loss'],
-                 color=val[0].get_color(),label=name.title()+' Train')
+        val = plt.plot(history_lr[0].epoch,avg,'--',label=str(name.title()).replace('_',' = ')+' Val')
+        plt.fill_between(history_lr[0].epoch, mins, maxs, edgecolor=val[0].get_color(), facecolor=val[0].get_color(), alpha=0.1)
+
+
+        maxs = np.max(train_accuracy,axis=0)
+        mins = np.min(train_accuracy, axis=0)
+        avg = np.average(train_accuracy, axis=0)
+
+        plt.plot(history_lr[0].epoch,avg,color=val[0].get_color(),label=str(name.title()).replace('_',' = ')+' Train')
+        plt.fill_between(history_lr[0].epoch, mins, maxs, edgecolor=val[0].get_color(), facecolor=val[0].get_color(),alpha=0.1)
 
 
     plt.xlabel('Epochs')
-    plt.ylabel('Binary Crossentropy')
+    plt.ylabel('Accuracy')
     plt.legend()
     plt.xlim([0,max(history.epoch)])
     plt.show()
 
 
-data_gen_args = dict(rotation_range=0.2,
-                    width_shift_range=0.05,
-                    height_shift_range=0.05,
-                    shear_range=0.05,
-                    zoom_range=0.05,
-                    horizontal_flip=True,
-                    fill_mode='nearest')
-myGene = DataAugmentation.trainGenerator(2,'Data','image','label',data_gen_args,save_to_dir = None)
+filters = [[64, 128, 256, 512, 1024]]
+# used learning rates
+lrs = [0.1,0.01,0.001,0.0001,0.00001]
+lrs = [0.001,0.0001,0.00001]
+# keras validation
+kf = sklearn.model_selection.KFold(n_splits=5,shuffle=True)
+histories = []
+for lr in lrs:
+    print(lr)
+
+    history_lr = []
+    split = 1
+    for train_index, val_index in kf.split(X_train):
+        file_name = f"lr_{lr}_s_{split}"
+        split+=1
+        mcp_save = ModelCheckpoint(f'weights/{file_name}.hdf5',
+                                   save_best_only=True,
+                                   monitor='val_loss',
+                                   mode='min')
+        csv_logger = CSVLogger(f'logs/{file_name}.log', separator=',', append=False)
+        model = UNet.UNet(filters = filters[0],lr = lr)
+        history = model.fit(X_train[train_index],y_train[train_index],validation_data=(X_train[val_index],y_train[val_index]),
+                            callbacks=[mcp_save,csv_logger],epochs=100,batch_size=1,verbose=2)
+        history_lr.append(history)
+        result = model.predict(X_test,batch_size=8)
+        np.save(file_name + '.npy', result)
+
+    histories.append([f"lr_{lr}",history_lr])
 
 
-filters = [[8, 16, 32, 64, 128],
-            [16, 32, 64, 128, 256],
-           [32, 64, 128, 256, 512]]
 
-Test_X = Train_X[-3:]
-for filter in filters:
-    print(filter)
 
-    model = UNet.UNet(filters = filter)
-    for use_aug in [True,False]:
-        file_name = str(filter)[1:-1].replace(', ', '-')
-        if use_aug:
-            history = model.fit_generator(myGene,epochs=2,steps_per_epoch=300)
-            file_name = file_name + '_Aug'
-        else :
-            history = model.fit(Train_X,Train_Y,validation_split=0.2,epochs=50,batch_size=1)
+plot_history(histories)
 
 
 
 
 
-        result = model.predict(Test_X)
-        np.save(file_name+'.npy' ,result)
+
+
 # save results as jpg files
-        result = result > 0.5
-        for i in range(len(Test_X)) :
-            cv2.imwrite("results/UNet/"+file_name+"_{}.jpg".format(i),
-                        cv2.hconcat(((Test_X[i][:,:,0]*255).astype(np.int),
-                                     (result[i][:,:,0]*255).astype(np.int))))
+#         result = result > 0.5
+#         for i in range(len(Test_X)) :
+#             cv2.imwrite("results/UNet/"+file_name+"_{}.jpg".format(i),
+#                         cv2.hconcat(((Test_X[i][:,:,0]*255).astype(np.int),
+#                                      (result[i][:,:,0]*255).astype(np.int))))
 
-# plot_history([('modified U-Net',history)])
+
 # model.save("UNetWeights_Aug.h5")
 
 # model = tf.keras.models.load_model("UNetWeights.h5")
