@@ -24,7 +24,6 @@ def bottleneck(x, filters, kernel_size=(3, 3), padding="same", strides=1):
 
 def UNet(filters,lr):
 
-    # filters = [64, 128, 256, 512, 1024]
     inputs = keras.layers.Input((512, 512, 1))
 
     p0 = inputs
@@ -42,7 +41,7 @@ def UNet(filters,lr):
 
     outputs = keras.layers.Conv2D(1, (1, 1), padding="same", activation="sigmoid")(u4)
     model = keras.models.Model(inputs, outputs)
-    opt =tf.keras.optimizers.SGD( learning_rate=0.0001, momentum=0.99)
+    opt =tf.keras.optimizers.SGD( learning_rate=lr, momentum=0.99)
     model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["acc"])
     model.summary()
     return model

@@ -1,3 +1,4 @@
+# used for loading .tif files
 import PIL.Image
 import numpy as np
 class Stack_wrapper(object):

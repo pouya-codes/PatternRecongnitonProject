@@ -11,27 +11,25 @@ from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger
 from tensorflow import keras
 import DataAugmentation
 tf.keras.optimizers.SGD
-from sklearn import model_selection
-
-
 
 np.random.seed(0)
-
+# load all augmented data
 all_files = np.array(glob.glob("AugmentedData/image*"),dtype=np.str)
-
 X = []
 y = []
 for f in all_files:
     label = str(f).split('image_')[-1]
     X.append(cv2.imread("AugmentedData/image_"+label,cv2.IMREAD_GRAYSCALE))
+    # covert mask to binary image
     th, threshed = cv2.threshold(cv2.imread("AugmentedData/mask_" + label, cv2.IMREAD_UNCHANGED)
                                  , 128, 255, cv2.THRESH_BINARY)
     y.append(threshed)
 
+# normalizing
 X = np.expand_dims(np.array(X) / 255.0 ,axis=-1)
 y = np.expand_dims(np.array(y) / 255.0 ,axis=-1)
 
-
+# split train and test data
 indexs = np.arange(len(all_files))
 np.random.shuffle(indexs)
 train_idx = indexs[:270]
@@ -43,10 +41,10 @@ y_train = y[train_idx]
 X_test = X[test_idx]
 y_test = y[test_idx]
 
+# save label of test data on the disk
 np.save("test_label.npy",y_test)
 
-
-# TODO Add comments, test the model with different layers and filters
+# plot accuracy of model of different learning rates
 def plot_history(histories) :
     plt.figure(figsize=(16,10))
     print (len(histories))
@@ -80,13 +78,10 @@ def plot_history(histories) :
 filters = [[64, 128, 256, 512, 1024]]
 # used learning rates
 lrs = [0.1,0.01,0.001,0.0001,0.00001]
-lrs = [0.001,0.0001,0.00001]
-# keras validation
+# cross validation with k=5
 kf = sklearn.model_selection.KFold(n_splits=5,shuffle=True)
 histories = []
 for lr in lrs:
-    print(lr)
-
     history_lr = []
     split = 1
     for train_index, val_index in kf.split(X_train):
