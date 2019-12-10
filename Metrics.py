@@ -66,32 +66,30 @@ def IoU_coef (pred, target):
     IoU_coef = IoU.mean()
     return IoU_coef, IoU_c1_mean, IoU_c0_mean
 
-target = np.load('label_testset.npy')
-target = target[...,-1]
 
-target1 = np.load('labels.npy')
 
-lr01 = np.load('lr_0.01.npy')
-lr01 = lr01[...,-1]
+target1 = np.load('test_label.npy')
 
-lr_01_s_1 = np.load('lr_0.1_s_1.npy')
+path = "predict/"
+
+lr_01_s_1 = np.load(f'{path}/lr_0.1_s_1.npy')
 lr_01_s_1 = lr_01_s_1[..., -1]
 
-lr_01_s_2 = np.load('lr_0.1_s_2.npy')
+lr_01_s_2 = np.load(f'{path}/lr_0.1_s_2.npy')
 lr_01_s_2 = lr_01_s_2[..., -1]
 
-lr_01_s_3 = np.load('lr_0.1_s_3.npy')
+lr_01_s_3 = np.load(f'{path}/lr_0.1_s_3.npy')
 lr_01_s_3 = lr_01_s_3[..., -1]
 
-lr_01_s_4 = np.load('lr_0.1_s_4.npy')
+lr_01_s_4 = np.load(f'{path}/lr_0.1_s_4.npy')
 lr_01_s_4 = lr_01_s_4[..., -1]
 
-lr_01_s_5 = np.load('lr_0.1_s_5.npy')
+lr_01_s_5 = np.load(f'{path}/lr_0.1_s_5.npy')
 lr_01_s_5 = lr_01_s_5[..., -1]
 
 
-target = binary(target,0.5)
-lr01 = binary(lr01,0.5)
+
+
 lr_01_s_1 = binary(lr_01_s_1,0.5)
 lr_01_s_2 = binary(lr_01_s_2,0.5)
 lr_01_s_3 = binary(lr_01_s_3,0.5)
@@ -99,7 +97,7 @@ lr_01_s_4 = binary(lr_01_s_4,0.5)
 lr_01_s_5 = binary(lr_01_s_5,0.5)
 
 
-pixelError = pixel_error(lr01,target1)
+
 pixelErrorlr_01_s_1 = pixel_error(lr_01_s_1,target1)
 pixelErrorlr_01_s_2 = pixel_error(lr_01_s_2,target1)
 pixelErrorlr_01_s_3 = pixel_error(lr_01_s_3,target1)
@@ -107,7 +105,6 @@ pixelErrorlr_01_s_4 = pixel_error(lr_01_s_4,target1)
 pixelErrorlr_01_s_5 = pixel_error(lr_01_s_5,target1)
 
 
-diceScore = dice_coef(lr01, target1)
 diceScorelr_01_s_1 = dice_coef(lr_01_s_1, target1)
 diceScorelr_01_s_2 = dice_coef(lr_01_s_2, target1)
 diceScorelr_01_s_3 = dice_coef(lr_01_s_3, target1)
@@ -115,7 +112,7 @@ diceScorelr_01_s_4 = dice_coef(lr_01_s_4, target1)
 diceScorelr_01_s_5 = dice_coef(lr_01_s_5, target1)
 
 
-IoU_Coef = IoU_coef(lr01, target1)
+
 IoU_Coeflr_01_s_1 = IoU_coef(lr_01_s_1, target1)
 IoU_Coeflr_01_s_2 = IoU_coef(lr_01_s_2, target1)
 IoU_Coeflr_01_s_3 = IoU_coef(lr_01_s_3, target1)

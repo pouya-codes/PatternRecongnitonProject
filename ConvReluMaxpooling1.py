@@ -62,7 +62,7 @@ def Relu_func(conv_res):
                 ReluFunc_res[x, y, n] = np.max([conv_res[x, y, n], 0])
     return ReluFunc_res
 
-im = cv2.imread("Data/train/0.png",-1)/255
+im = cv2.imread("Data/image/0.png",-1)/255
 
 l1_kernel1 = np.random.rand(4, 3, 3)/10
 layer1_conv1 = conv_func(im, l1_kernel1)
