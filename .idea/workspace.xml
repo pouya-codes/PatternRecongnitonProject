@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5e673540-28ea-4576-95dd-96e69bac2940" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvReluMaxpooling1.py" beforeDir="false" afterPath="$PROJECT_DIR$/ConvReluMaxpooling1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/Metrics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SegCaps/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/SegCaps/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SegCaps/imgs/baselinecaps.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SegCaps/imgs/manip_cropped.png" beforeDir="false" />
@@ -59,7 +58,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.ConvReluMaxpooling1">
+  <component name="RunManager" selected="Python.Main">
     <configuration name="AccuracyPlot" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PatternRecognition" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -179,11 +178,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Main" />
         <item itemvalue="Python.ConvReluMaxpooling1" />
         <item itemvalue="Python.Metrics" />
         <item itemvalue="Python.AccuracyPlot" />
         <item itemvalue="Python.ROC_Curve (2)" />
-        <item itemvalue="Python.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -223,7 +222,7 @@
       <workItem from="1575743427809" duration="41493000" />
       <workItem from="1575941130753" duration="237000" />
       <workItem from="1575944373393" duration="7093000" />
-      <workItem from="1576015836427" duration="463000" />
+      <workItem from="1576015836427" duration="1525000" />
     </task>
     <servers />
   </component>
@@ -261,7 +260,7 @@
     <SUITE FILE_PATH="coverage/PatternRecongnitonProject$ROC_Curve__2_.coverage" NAME="ROC_Curve (2) Coverage Results" MODIFIED="1575947903165" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PatternRecongnitonProject$AccuracyPlot.coverage" NAME="AccuracyPlot Coverage Results" MODIFIED="1575948098113" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PatternRecognition$DataAugmentation.coverage" NAME="DataAugmentation Coverage Results" MODIFIED="1573147902721" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PatternRecongnitonProject$Main.coverage" NAME="Main Coverage Results" MODIFIED="1575926653289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PatternRecongnitonProject$Main.coverage" NAME="Main Coverage Results" MODIFIED="1576022493492" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PatternRecognition$SegCaps.coverage" NAME="SegCaps Coverage Results" MODIFIED="1573942074945" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PatternRecognition$U_Net.coverage" NAME="U-Net Coverage Results" MODIFIED="1573161601632" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PatternRecongnitonProject$Metrics.coverage" NAME="Metrics Coverage Results" MODIFIED="1576013681079" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

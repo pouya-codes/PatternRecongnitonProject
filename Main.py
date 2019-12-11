@@ -9,8 +9,7 @@ import tensorflow as tf
 import sklearn
 from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger
 from tensorflow import keras
-import DataAugmentation
-tf.keras.optimizers.SGD
+import sklearn.model_selection
 
 np.random.seed(0)
 # load all augmented data
